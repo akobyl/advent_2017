@@ -45,7 +45,8 @@ class Tree(object):
 nodes = []  # type: list[Node]
 child_parent = {}
 
-with open('day7_test.txt') as file:
+with open('day7_in.txt') as file:
+# with open('day7_test.txt') as file:
     for line in file:
         line = line.rstrip()
         input = line.split(' ')
@@ -86,4 +87,13 @@ for node in nodes:
         all_children_equal = all(x==children_weights[0] for x in children_weights)
 
         if not all_children_equal:
-            print(node.children_weights())
+            print('unbalanced node: {}'.format(node.name))
+            # node_children_names = [child.name for child in node.children]
+            # node_children_weights = [value for k, value in node.children_weights().items()]
+            # print('{} + ({}) = {} + ({})'.format(node.name, node_children_names, node.weight, node_children_weights))
+
+            for c_node in node.children:
+                node_children_names = [child.name for child in c_node.children]
+                node_children_weights = [value for k, value in c_node.children_weights().items()]
+                total = c_node.calc_weight_of_children()
+                print('{} + ({}) = {} + ({}) = {}'.format(c_node.name, node_children_names, c_node.weight, node_children_weights, total))
