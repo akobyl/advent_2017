@@ -1,7 +1,4 @@
-import copy
-
 layers = []
-original_layers = []
 current_range = -1
 
 # layers: [layer range, depth, scanner location, scanner going down (true) or up (false)]
@@ -12,10 +9,10 @@ with open('day13_in.txt') as file:
 
         current_range += 1
         while current_range < input_range:
-            original_layers.append([current_range, 0, None, None])
+            layers.append([current_range, 0, None, None])
             current_range += 1
 
-        original_layers.append([current_range, input_depth, 0, True])
+        layers.append([current_range, input_depth, 0, True])
 
 
 def increment_scanner():
@@ -42,25 +39,18 @@ def increment_scanner():
 
 
 hit_by_scanner = True
-delay = -1
+delay = 0
+max_reached = 0
+
 while hit_by_scanner:
-    layers = copy.deepcopy(original_layers[:])
     delay += 1
     hit_by_scanner = False
-    packet_loc = -1
-    # print('running loop {}'.format(delay))
-    # print(layers)
-
-    for i in range(delay):
-        increment_scanner()
 
     for t in range(len(layers)):
-        packet_loc += 1
-        if layers[packet_loc][2] == 0:
-            hit_by_scanner = True
-            # print('hit by scanner {}'.format(layers[packet_loc]))
-            break
-        increment_scanner()
+        if layers[t][1] != 0:
+            if (delay + t) % ((layers[t][1] * 2) - 2) == 0:
+                hit_by_scanner = True
+                break
 
 print('-----\npart 2')
 print(delay)
