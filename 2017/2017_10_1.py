@@ -5,7 +5,6 @@ INPUT = [129, 154, 49, 198, 200, 133, 97, 254, 41, 6, 2, 1, 255, 0, 191, 108]
 list_position = 0
 skip_size = 0
 positions = [0, 0]
-print(circ_list)
 
 for length in INPUT:
     if length > 0:

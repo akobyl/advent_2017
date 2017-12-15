@@ -1,6 +1,6 @@
 sum = 0
 
-with open('day4_in.txt') as file:
+with open('input/day4_in.txt') as file:
     for line in file:
         # remove newline
         line = line.rstrip()

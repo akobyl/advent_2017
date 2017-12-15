@@ -2,7 +2,7 @@ layers = []
 current_range = -1
 
 # layers: [layer range, depth, scanner location, scanner going down (true) or up (false)]
-with open('day13_in.txt') as file:
+with open('input/day13_in.txt') as file:
     for line in file:
         input_range = int(line[:line.find(':')])
         input_depth = int(line[(line.find(':') + 1):])
@@ -37,20 +37,13 @@ def increment_scanner():
                     layer[2] += 1
                     layer[3] = True
 
+packet_loc = -1
+severity = 0
+for t in range(len(layers)):
+    packet_loc += 1
+    if layers[packet_loc][2] == 0:
+        severity += layers[packet_loc][0]*layers[packet_loc][1]
+    increment_scanner()
 
-hit_by_scanner = True
-delay = 0
-max_reached = 0
-
-while hit_by_scanner:
-    delay += 1
-    hit_by_scanner = False
-
-    for t in range(len(layers)):
-        if layers[t][1] != 0:
-            if (delay + t) % ((layers[t][1] * 2) - 2) == 0:
-                hit_by_scanner = True
-                break
-
-print('-----\npart 2')
-print(delay)
+print('-----\npart 1')
+print(severity)

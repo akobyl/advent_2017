@@ -1,7 +1,7 @@
 registers = {}
 max_value_ever = 0
 
-with open('day8_in.txt') as file:
+with open('input/day8_in.txt') as file:
     for line in file:
         print(line.rstrip())
         instruction = line.rstrip().split(' ')

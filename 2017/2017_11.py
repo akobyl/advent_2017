@@ -1,4 +1,4 @@
-with open('day11_in.txt') as file:
+with open('input/day11_in.txt') as file:
     INPUT = file.read().rstrip()
 
 steps = INPUT.split(',')

@@ -1,7 +1,6 @@
-file = open("day2_in.txt", 'r')
 checksum = 0
 
-with open('day2_in.txt') as file:
+with open('input/day2_in.txt') as file:
     for line in file:
         data = line.split('\t')
         data = [int(i) for i in data]

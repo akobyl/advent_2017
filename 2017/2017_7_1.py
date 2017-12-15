@@ -22,7 +22,7 @@ class Tree(object):
 nodes = []
 child_parent = {}
 
-with open('day7_in.txt') as file:
+with open('input/day7_in.txt') as file:
     for line in file:
         line = line.rstrip()
         input = line.split(' ')

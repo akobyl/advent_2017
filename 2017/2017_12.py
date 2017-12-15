@@ -1,7 +1,7 @@
 groups = []     # type: list[int]
 connections = []    # type: list[int]
 
-with open('day12_in.txt') as file:
+with open('input/day12_in.txt') as file:
     for line in file:
         program = int(line[:line.find('<')])
         links = [int(i) for i in line[line.find('>') + 1:].split(',')]

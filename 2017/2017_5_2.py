@@ -1,7 +1,7 @@
 jumps = 0
 list = []
 
-with open('day5_in.txt') as file:
+with open('input/day5_in.txt') as file:
     for line in file:
         list.append(int(line))
 

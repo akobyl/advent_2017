@@ -8,7 +8,7 @@ INPUT = '<random characters>'
 INPUT = '<!!!>>'
 INPUT = '<{o"i!a,<{i<a>'
 
-with open('day9_in.txt') as file:
+with open('input/day9_in.txt') as file:
     INPUT = file.read()
 
 score = 0
