@@ -47,11 +47,14 @@ class Duet(object):
             instruction = instructions[pc]
             cmd = instruction[0]
             cmd_reg = instruction[1]
+            if self.id == 0:
+                print('p{}: pc {}: {}'.format(self.id, pc, instruction))
 
             if cmd == 'snd':
-                self.tx_queue.put(self.get_int_or_reg_val(cmd_reg))
+                self.tx_queue.put(self.get_register(cmd_reg))
                 self.send_count += 1
-                print('p{} sent {} [{}]'.format(self.id, self.get_int_or_reg_val(cmd_reg), self.send_count))
+                if self.id == 0:
+                    print('\tp{} sent {} [{}]'.format(self.id, self.get_int_or_reg_val(cmd_reg), self.send_count))
                 pc += 1
             elif cmd == 'set':
                 self.registers[cmd_reg] = self.get_int_or_reg_val(instruction[2])
@@ -60,7 +63,7 @@ class Duet(object):
                 self.registers[cmd_reg] = self.get_register(cmd_reg) + self.get_int_or_reg_val(instruction[2])
                 pc += 1
             elif cmd == 'mul':
-                self.registers[cmd_reg] = self.get_register(cmd_reg) * self.get_int_or_reg_val(instruction[2])
+                self.registers[cmd_reg] = self.get_register(cmd_reg) * int(instruction[2])
                 pc += 1
             elif cmd == 'mod':
                 self.registers[cmd_reg] = self.get_register(cmd_reg) % self.get_int_or_reg_val(instruction[2])
@@ -69,10 +72,10 @@ class Duet(object):
                 if self.rx_queue.empty():
                     with self.status_lock:
                         self.rx_status = True
-                        print('p{} empty rx'.format(self.id))
+                        print('\tp{} empty rx'.format(self.id))
                 self.registers[cmd_reg] = self.rx_queue.get()
                 self.rx_buffer.append(self.registers[cmd_reg])
-                print('p{} received {}'.format(self.id, self.rx_buffer[-1]))
+                # print('p{} received {}'.format(self.id, self.rx_buffer[-1]))
                 with self.status_lock:
                     self.rx_status = False
                 pc += 1
@@ -81,6 +84,8 @@ class Duet(object):
                     pc += self.get_int_or_reg_val(instruction[2])
                 else:
                     pc += 1
+            if self.id == 0:
+                print('\tp{}reg: {}'.format(self.id, self.registers))
 
     def get_rx_status(self):
         with self.status_lock:
