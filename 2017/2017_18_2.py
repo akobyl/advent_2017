@@ -47,14 +47,13 @@ class Duet(object):
             instruction = instructions[pc]
             cmd = instruction[0]
             cmd_reg = instruction[1]
-            if self.id == 0:
-                print('p{}: pc {}: {}'.format(self.id, pc, instruction))
+            print('p{}: pc {}: {} |\t{}'.format(self.id, pc, instruction, self.registers))
 
             if cmd == 'snd':
                 self.tx_queue.put(self.get_register(cmd_reg))
                 self.send_count += 1
-                if self.id == 0:
-                    print('\tp{} sent {} [{}]'.format(self.id, self.get_int_or_reg_val(cmd_reg), self.send_count))
+                # if self.id == 0:
+                #     print('\tp{} sent {} [{}]'.format(self.id, self.get_int_or_reg_val(cmd_reg), self.send_count))
                 pc += 1
             elif cmd == 'set':
                 self.registers[cmd_reg] = self.get_int_or_reg_val(instruction[2])
@@ -72,7 +71,6 @@ class Duet(object):
                 if self.rx_queue.empty():
                     with self.status_lock:
                         self.rx_status = True
-                        print('\tp{} empty rx'.format(self.id))
                 self.registers[cmd_reg] = self.rx_queue.get()
                 self.rx_buffer.append(self.registers[cmd_reg])
                 # print('p{} received {}'.format(self.id, self.rx_buffer[-1]))
@@ -80,12 +78,14 @@ class Duet(object):
                     self.rx_status = False
                 pc += 1
             elif cmd == 'jgz':
-                if self.get_register(cmd_reg) > 0:
+                if pc == 33:
+                    print(self.id, instruction)
+                if self.get_int_or_reg_val(cmd_reg) > 0:
                     pc += self.get_int_or_reg_val(instruction[2])
                 else:
                     pc += 1
-            if self.id == 0:
-                print('\tp{}reg: {}'.format(self.id, self.registers))
+            # if self.id == 0:
+            #     print('\tp{}reg: {}'.format(self.id, self.registers))
 
     def get_rx_status(self):
         with self.status_lock:
